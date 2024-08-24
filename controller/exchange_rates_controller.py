@@ -29,7 +29,7 @@ class ExchangeRatesController(Controller):
             ExchangeRateCodesDTO(
                 base_currency_code=parsed_data['baseCurrencyCode'],
                 target_currency_code=parsed_data['targetCurrencyCode'],
-                rate=Decimal(parsed_data['rate']).quantize(Decimal('0.06')),
+                rate=round(float(parsed_data['rate']), 6),
             )
         )
 
@@ -42,7 +42,7 @@ class ExchangeRatesController(Controller):
         response = self._DAO.update(
             ExchangeRateCodesDTO(
                 *codes,
-                rate=Decimal(parsed_data['rate']).quantize(Decimal('0.06'))
+                rate=round(float(parsed_data['rate']), 6)
             )
         )
 

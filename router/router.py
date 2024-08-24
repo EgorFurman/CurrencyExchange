@@ -1,4 +1,4 @@
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urlparse
 
 from controller.currencies_controller import CurrenciesController
 from controller.exchange_rates_controller import ExchangeRatesController
@@ -9,6 +9,15 @@ class Router:
     def __init__(self):
         self._currencies_controller = CurrenciesController()
         self._exchange_rates_controller = ExchangeRatesController()
+        self._upd_router = {
+            'GET': {
+                'currencies': {
+                    'controller': self._currencies_controller,
+                    'with_id': False
+                }
+            }
+        }
+
         self._router = {
             'GETcurrencies': {
                 'controller': self._currencies_controller.get,
@@ -54,14 +63,22 @@ class Router:
         controller = route['controller']
         with_id = route['with_id']
 
-        if with_id and len(segments) == 2:
-            return controller(segments[1])
-        elif with_id:
-            raise MissingCurrencyCodeError
-        elif query_params:
-            return controller(query_params)
+        if command == 'GET':
+            if with_id and len(segments) == 2:
+                return controller(segments[1])
+            elif with_id:
+                raise MissingCurrencyCodeError
+            elif query_params:
+                return controller(query_params)
 
-        return controller()
+            return controller()
+        elif command == 'POST':
+            return controller
+        elif command == 'PATCH':
+            if with_id and len(segments) == 2:
+                return controller(segments[1])
+            elif with_id:
+                raise MissingCurrencyCodeError
 
     def _try_get_route(self, path: str):
         route = self._router.get(path)

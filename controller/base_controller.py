@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from urllib.parse import parse_qs
 
-from DAO.base_DAO import BaseDAO
 from exceptions import MissingFieldError
 
 

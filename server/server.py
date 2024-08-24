@@ -63,7 +63,7 @@ class Handler(BaseHTTPRequestHandler):
         self._send_headers()
         self.end_headers()
 
-    def _send_response(self, json_data: str, status_code: int, content_type: str = None):
+    def _send_response(self, json_data: str, status_code: int, content_type: str = 'application/json'):
         self.send_response(status_code)
 
         self._send_headers()
@@ -95,10 +95,10 @@ class Handler(BaseHTTPRequestHandler):
         return self.rfile.read(int(self.headers['Content-Length'])).decode("utf-8")
 
 
-def run():
-    server_address = ('', 8000)
+def run(host: str = '', port: int = 8000):
+    server_address = (host, port)
     httpd = HTTPServer(server_address, Handler)
-    print('Server running at http://localhost:8000')
+    print(f'Server running at http://localhost:{port}')
     httpd.serve_forever()
 
 

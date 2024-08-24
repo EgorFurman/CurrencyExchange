@@ -34,7 +34,7 @@ class CurrencyNotFoundError(RecordNotFoundError):
         return self.message
 
 
-class ExchangeRateNotFoundError(CurrencyExchangeError):
+class ExchangeRateNotFoundError(RecordNotFoundError):
     """Exception raised when exchange rate with the specified parameters not found."""
 
     def __init__(self, base_code, target_code, *args):

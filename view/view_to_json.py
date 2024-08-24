@@ -21,7 +21,7 @@ class ViewToJson:
         elif all(isinstance(d, (CurrencyIDDTO, ExchangeRateDetailDTO)) for d in dto):
             return json.dumps([self._dto_to_dict(d) for d in dto], ensure_ascii=False, indent=4)
         else:
-            raise TypeError("Дописать!")
+            raise TypeError("")
 
     @staticmethod
     def error_to_json(error):

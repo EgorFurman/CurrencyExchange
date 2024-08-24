@@ -1,12 +1,15 @@
-from pathlib import Path
-from dataclasses import dataclass
+from dynaconf import Dynaconf
+
+_settings = Dynaconf(
+    settings_file=["config.yaml"],
+)
 
 
-@dataclass
 class Settings:
-    db_name = 'CurrencyExchange.db'
-    db_path = rf'{Path.cwd()}\db\CurrencyExchange.db'
+    def __init__(self, db_name: str) -> None:
+        self.db_name: str = db_name
 
 
-settings = Settings()
+settings = Settings(db_name=_settings.database.db_name)
+
 

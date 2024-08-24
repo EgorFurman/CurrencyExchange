@@ -1,2 +1,2 @@
 database:
-  name: CurrencyExchange.db
+  DB_NAME: CurrencyExchange.db

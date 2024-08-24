@@ -8,6 +8,7 @@ from DTO import ConvertDTO, ConvertDetailDTO
 from exceptions import ExchangeRateNotFoundError, ImpossibleConvertError
 from controller.currencies_controller import CurrenciesController
 
+
 class ConvertService:
     def __init__(self, exchange_rates_controller: 'ExchangeRatesController'):
         self._controller = exchange_rates_controller
@@ -30,32 +31,32 @@ class ConvertService:
                 baseCurrency=CurrenciesController().get(convert_dto.base_currency_code).__dict__,
                 targetCurrency=CurrenciesController().get(convert_dto.target_currency_code).__dict__,
                 rate=Decimal(1.00).quantize(Decimal('0.01')),
-                amount=convert_dto.amount.quantize(Decimal('0.01')),
-                convertedAmount=convert_dto.amount.quantize(Decimal('0.01'))
+                amount=convert_dto.amount,
+                convertedAmount=convert_dto.amount
             )
 
         direct_rate = self._controller.get(f'{convert_dto.base_currency_code}{convert_dto.target_currency_code}')
 
-        rate = direct_rate.rate
+        rate = Decimal(direct_rate.rate).quantize(Decimal('0.000001'))
 
         return ConvertDetailDTO(
             baseCurrency=direct_rate.baseCurrency,
             targetCurrency=direct_rate.targetCurrency,
-            rate=rate.quantize(Decimal('0.01')),
-            amount=convert_dto.amount.quantize(Decimal('0.01')),
+            rate=rate,
+            amount=convert_dto.amount,
             convertedAmount=(rate * convert_dto.amount).quantize(Decimal('0.01'))
         )
 
     def _try_get_inverse_convert(self, convert_dto: ConvertDTO):
         inverse_rate = self._controller.get(f'{convert_dto.base_currency_code}{convert_dto.target_currency_code}')
 
-        rate = (1 / inverse_rate.rate).quantize(Decimal('0.01'))
+        rate = Decimal(1 / inverse_rate.rate).quantize(Decimal('0.000001'))
 
         return ConvertDetailDTO(
             baseCurrency=inverse_rate.baseCurrency,
             targetCurrency=inverse_rate.targetCurrency,
-            rate=rate.quantize(Decimal('0.01')),
-            amount=convert_dto.amount.quantize(Decimal('0.01')),
+            rate=rate,
+            amount=convert_dto.amount,
             convertedAmount=(rate * convert_dto.amount).quantize(Decimal('0.01'))
         )
 
@@ -63,12 +64,13 @@ class ConvertService:
         usd_to_base_rate = self._controller.get(f'USD{convert_dto.base_currency_code}')
         usd_to_target_rate = self._controller.get(f'USD{convert_dto.target_currency_code}')
 
-        rate = (usd_to_target_rate.rate / usd_to_base_rate.rate).quantize(Decimal('0.01'))
+        rate = Decimal(usd_to_target_rate.rate / usd_to_base_rate.rate).quantize(Decimal('0.000001'))
+
         return ConvertDetailDTO(
             baseCurrency=usd_to_base_rate.baseCurrency,
             targetCurrency=usd_to_target_rate.targetCurrency,
-            rate=rate.quantize(Decimal('0.01')),
-            amount=convert_dto.amount.quantize(Decimal('0.01')),
+            rate=rate,
+            amount=convert_dto.amount,
             convertedAmount=(rate * convert_dto.amount).quantize(Decimal('0.01'))
         )
 

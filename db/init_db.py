@@ -1,5 +1,6 @@
-from core.database import ConnectManager
+import sqlite3
 from core.config import settings
+
 
 QUERIES = {
     'init_currencies': '''CREATE TABLE IF NOT EXISTS Currencies (
@@ -19,15 +20,16 @@ QUERIES = {
 }
 
 
-def init_db(connect_manager: ConnectManager):
-    with connect_manager.get_cursor() as cursor:
+def init_db():
+    with sqlite3.connect(settings.db_name) as connection:
+        cursor = connection.cursor()
         cursor.execute(QUERIES['init_currencies'])
         cursor.execute(QUERIES['init_exchange_rates'])
         cursor.execute(QUERIES['init_exchange_rates_index'])
 
 
 if __name__ == '__main__':
-    init_db(ConnectManager(settings.db_name))
+    init_db()
 
 
 

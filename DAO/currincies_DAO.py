@@ -14,13 +14,13 @@ class CurrenciesDAO(BaseDAO):
     }
 
     def get_all(self):
-        with sqlite3.connect(self.db_path) as connection:
+        with sqlite3.connect(self._DB_PATH) as connection:
             cursor = connection.cursor()
 
             return cursor.execute(self._QUERIES['get_all']).fetchall()
 
     def get_by_id(self, id) -> list[tuple[int, str, str, str]]:
-        with sqlite3.connect(self.db_path) as connection:
+        with sqlite3.connect(self._DB_PATH) as connection:
             cursor = connection.cursor()
 
             response = cursor.execute(self._QUERIES['get_by_id'], (id,)).fetchone()
@@ -29,7 +29,7 @@ class CurrenciesDAO(BaseDAO):
         return response
 
     def get_by_code(self, code: str) -> tuple[int, str, str, str]:
-        with sqlite3.connect(self.db_path) as connection:
+        with sqlite3.connect(self._DB_PATH) as connection:
             cursor = connection.cursor()
             response = cursor.execute(self._QUERIES['get_by_code'], (code,)).fetchone()
 
@@ -37,7 +37,7 @@ class CurrenciesDAO(BaseDAO):
         return response
 
     def insert(self, dto: CurrencyDTO) -> tuple[int, str, str, str]:
-        with sqlite3.connect(self.db_path) as connection:
+        with sqlite3.connect(self._DB_PATH) as connection:
             cursor = connection.cursor()
 
             try:

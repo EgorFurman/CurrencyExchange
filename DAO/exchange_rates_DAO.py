@@ -1,8 +1,7 @@
 import sqlite3
 
-from DAO.base_DAO import BaseDAO, ConnectManager
-from DTO.exchange_rate_DTO import ExchangeRateCodesDTO, ExchangeRateDetailDTO
-from DTO.currency_DTO import CurrencyDTO
+from DAO.base_DAO import BaseDAO
+from DTO.exchange_rate_DTO import ExchangeRateCodesDTO
 from exceptions import ExchangeRateNotFoundError, InsertAlreadyExistsExchangeRateError, CurrenciesNotExistsError
 
 
@@ -51,13 +50,13 @@ class ExchangeRatesDAO(BaseDAO):
     }
 
     def get_all(self):
-        with sqlite3.connect(self.db_path) as connection:
+        with sqlite3.connect(self._DB_PATH) as connection:
             cursor = connection.cursor()
 
             return cursor.execute(self._QUERIES['get_all']).fetchall()
 
     def get_by_codes(self, base_code: str, target_code: str):
-        with sqlite3.connect(self.db_path) as connection:
+        with sqlite3.connect(self._DB_PATH) as connection:
             cursor = connection.cursor()
 
             response = cursor.execute(self._QUERIES['get_by_codes'], (base_code, target_code)).fetchone()
@@ -66,7 +65,7 @@ class ExchangeRatesDAO(BaseDAO):
         return response
 
     def insert(self, dto: ExchangeRateCodesDTO):
-        with sqlite3.connect(self.db_path) as connection:
+        with sqlite3.connect(self._DB_PATH) as connection:
             cursor = connection.cursor()
 
             self._check_currencies_availability(
@@ -93,7 +92,7 @@ class ExchangeRatesDAO(BaseDAO):
     def update(self, dto: ExchangeRateCodesDTO):
         self.get_by_codes(dto.base_currency_code, dto.target_currency_code)
 
-        with sqlite3.connect(self.db_path) as connection:
+        with sqlite3.connect(self._DB_PATH) as connection:
             cursor = connection.cursor()
 
             cursor.execute(
@@ -103,7 +102,7 @@ class ExchangeRatesDAO(BaseDAO):
         return self.get_by_codes(dto.base_currency_code, dto.target_currency_code)
 
     def _check_currencies_availability(self, base_code: str, target_code: str):
-        with sqlite3.connect(self.db_path) as connection:
+        with sqlite3.connect(self._DB_PATH) as connection:
             cursor = connection.cursor()
 
             if not cursor.execute(self._QUERIES['check_currencies'], (base_code, target_code)).fetchone():
