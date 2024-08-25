@@ -1,3 +1,4 @@
+import os
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 from router.router import Router
@@ -100,6 +101,3 @@ def run(host: str = '', port: int = 8000):
     httpd = HTTPServer(server_address, Handler)
     print(f'Server running at http://localhost:{port}')
     httpd.serve_forever()
-
-
-run()
