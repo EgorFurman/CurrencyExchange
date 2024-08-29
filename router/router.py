@@ -9,14 +9,6 @@ class Router:
     def __init__(self):
         self._currencies_controller = CurrenciesController()
         self._exchange_rates_controller = ExchangeRatesController()
-        self._upd_router = {
-            'GET': {
-                'currencies': {
-                    'controller': self._currencies_controller,
-                    'with_id': False
-                }
-            }
-        }
 
         self._router = {
             'GETcurrencies': {

@@ -96,8 +96,13 @@ class Handler(BaseHTTPRequestHandler):
         return self.rfile.read(int(self.headers['Content-Length'])).decode("utf-8")
 
 
-def run(host: str = '', port: int = 8000):
+def run(host: str = '', port: int = 8000, ip: str = None):
     server_address = (host, port)
     httpd = HTTPServer(server_address, Handler)
-    print(f'Server running at http://localhost:{port}')
+    if host:
+        print(f'Server running at {host}')
+    elif ip:
+        print(f'Server running at http://{ip}:{port}')
+    else:
+        print(f'Server running at http://localhost:{port}')
     httpd.serve_forever()
