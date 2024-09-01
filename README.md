@@ -8,9 +8,9 @@ REST API для описания валют и обменных курсов. П
 
 ## Установка и запуск
 1. Склонируйте репозиторий:
-```bash
-git clone https://github.com/EgorFurman/CurrencyExchange.git
-```
+	```bash
+	git clone https://github.com/EgorFurman/CurrencyExchange.git
+	```
 
 2. Создайте виртуальное окружение:
 - **На Windows**
@@ -33,10 +33,9 @@ git clone https://github.com/EgorFurman/CurrencyExchange.git
 	```
 
 4. Установите зависимости:
-Выполните команду:
-```bash
-pip install -r requirements.txt
-```
+	```bash
+	pip install -r requirements.txt
+	```
 
 5. Запустите проект:
 - **На Windows**
