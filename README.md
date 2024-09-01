@@ -45,7 +45,6 @@ REST API для описания валют и обменных курсов. П
 - **На MacOS/Linux**
 	```shell
 	python3.11 main.py
-```
 
 ## REST API
 ### Валюты 
