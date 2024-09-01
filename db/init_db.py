@@ -20,7 +20,7 @@ QUERIES = {
 }
 
 
-def init_db():
+def init_db() -> None:
     with sqlite3.connect(settings.db_name) as connection:
         cursor = connection.cursor()
         cursor.execute(QUERIES['init_currencies'])
